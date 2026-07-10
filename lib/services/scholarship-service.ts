@@ -1,0 +1,13 @@
+import { addDoc, collection, doc, getDoc, increment, onSnapshot, orderBy, query, runTransaction, serverTimestamp, updateDoc, where } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import type { Donation, Milestone, Scholarship } from "@/lib/types";
+
+const serialize = <T>(id: string, data: Record<string, unknown>) => ({ id, ...data }) as T;
+export function listenToScholarships(callback: (items: Scholarship[]) => void, onError?: (error: Error) => void) { return onSnapshot(query(collection(db, "scholarships"), orderBy("createdAt", "desc")), (snap) => callback(snap.docs.map((d) => serialize<Scholarship>(d.id, d.data()))), (e) => onError?.(e)); }
+export function listenToStudentScholarships(studentId: string, callback: (items: Scholarship[]) => void, onError?: (error: Error) => void) { return onSnapshot(query(collection(db, "scholarships"), where("studentId", "==", studentId), orderBy("createdAt", "desc")), (snap) => callback(snap.docs.map((d) => serialize<Scholarship>(d.id, d.data()))), (e) => onError?.(e)); }
+export function listenToDonations(donorId: string, callback: (items: Donation[]) => void, onError?: (error: Error) => void) { return onSnapshot(query(collection(db, "donations"), where("donorId", "==", donorId), orderBy("createdAt", "desc")), (snap) => callback(snap.docs.map((d) => serialize<Donation>(d.id, d.data()))), (e) => onError?.(e)); }
+export async function getScholarship(id: string) { const snap = await getDoc(doc(db, "scholarships", id)); return snap.exists() ? serialize<Scholarship>(snap.id, snap.data()) : null; }
+export async function createScholarship(input: Omit<Scholarship, "id" | "createdAt" | "raised" | "status">, txHash: string) { return addDoc(collection(db, "scholarships"), { ...input, factoryTxHash: txHash, raised: 0, status: "funding", createdAt: serverTimestamp(), updatedAt: serverTimestamp() }); }
+export async function updateScholarship(id: string, patch: Partial<Scholarship>) { await updateDoc(doc(db, "scholarships", id), { ...patch, updatedAt: serverTimestamp() }); }
+export async function recordDonation(donation: Omit<Donation, "id" | "createdAt">) { await runTransaction(db, async (transaction) => { const scholarshipRef = doc(db, "scholarships", donation.scholarshipId); transaction.update(scholarshipRef, { raised: increment(donation.amount), updatedAt: serverTimestamp() }); transaction.set(doc(collection(db, "donations")), { ...donation, createdAt: serverTimestamp() }); }); }
+export async function verifyMilestone(scholarshipId: string, milestoneId: string, status: Milestone["status"], feedback: string, txHash: string) { await addDoc(collection(db, "milestoneReviews"), { scholarshipId, milestoneId, status, feedback, txHash, createdAt: serverTimestamp() }); }

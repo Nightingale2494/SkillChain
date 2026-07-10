@@ -1,0 +1,7 @@
+"use client";
+import { Badge, Card } from "@/components/ui";
+import { MilestoneActions } from "@/components/actions/milestone-actions";
+import { AppShell } from "@/components/shared/app-shell";
+import { SkeletonGrid } from "@/components/states/skeleton";
+import { useScholarships } from "@/lib/hooks/use-scholarships";
+export default function MilestonesPage() { const { items, loading, error } = useScholarships(); const milestones=items.flatMap((s,si)=>s.milestones.map((m,mi)=>({...m, numericScholarshipId: si+1, numericMilestoneId: mi+1, scholarship:s.title, scholarshipDocId:s.id, student:s.studentName, studentWallet:s.studentId}))); return <AppShell title="Milestone verification" subtitle="Review proofs, approve or reject submissions, and trigger Soroban escrow releases after academic validation.">{loading ? <SkeletonGrid/> : error ? <p className="text-red-300">{error}</p> : <div className="space-y-4">{milestones.map(m=><Card key={`${m.scholarshipId}-${m.id}`}><div className="flex flex-wrap items-center justify-between gap-4"><div><Badge>{m.status}</Badge><h2 className="mt-3 text-xl font-bold">{m.title}</h2><p className="text-slate-300">{m.student} • {m.scholarship}</p><p className="mt-1 text-sm text-slate-400">Verifier: {m.verifier} • {m.amount} XLM</p></div><MilestoneActions scholarshipId={m.scholarshipDocId} numericScholarshipId={m.numericScholarshipId} milestoneId={m.numericMilestoneId} studentWallet={m.studentWallet} amount={m.amount} proofUri={m.proofUrl ?? "firestore-proof-pending"}/></div></Card>)}</div>}</AppShell>; }

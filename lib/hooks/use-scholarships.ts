@@ -1,0 +1,9 @@
+"use client";
+import { useEffect, useState, useTransition } from "react";
+import type { Donation, Scholarship } from "@/lib/types";
+import { listenToDonations, listenToScholarships, listenToStudentScholarships } from "@/lib/services/scholarship-service";
+
+export function useScholarships() { const [items,setItems]=useState<Scholarship[]>([]); const [error,setError]=useState<string>(); const [loading,setLoading]=useState(true); useEffect(()=>listenToScholarships((next)=>{setItems(next);setLoading(false)}, (e)=>{setError(e.message);setLoading(false)}),[]); return { items, loading, error }; }
+export function useStudentScholarships(studentId?: string) { const [items,setItems]=useState<Scholarship[]>([]); const [error,setError]=useState<string>(); const [loading,setLoading]=useState(Boolean(studentId)); useEffect(()=>{ if(!studentId){setLoading(false);return;} return listenToStudentScholarships(studentId,(next)=>{setItems(next);setLoading(false)},(e)=>{setError(e.message);setLoading(false)}); },[studentId]); return { items, loading, error }; }
+export function useDonorDonations(donorId?: string) { const [items,setItems]=useState<Donation[]>([]); const [error,setError]=useState<string>(); const [loading,setLoading]=useState(Boolean(donorId)); useEffect(()=>{ if(!donorId){setLoading(false);return;} return listenToDonations(donorId,(next)=>{setItems(next);setLoading(false)},(e)=>{setError(e.message);setLoading(false)}); },[donorId]); return { items, loading, error }; }
+export function useOptimisticList<T extends { id: string }>(initial: T[]) { const [items,setItems]=useState(initial); const [isPending,startTransition]=useTransition(); const upsert=(item:T)=>startTransition(()=>setItems((prev)=>[item,...prev.filter((x)=>x.id!==item.id)])); return { items, setItems, upsert, isPending }; }

@@ -1,0 +1,5 @@
+"use client";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { AppShell } from "@/components/shared/app-shell";
+import { useScholarships } from "@/lib/hooks/use-scholarships";
+export default function AdminPage() { const { items } = useScholarships(); const milestones = items.flatMap((item)=>item.milestones); return <AppShell title="Admin panel" subtitle="Operational controls for verifier roles, campaign risk checks, feedback review and contract deployment metadata."><div className="grid gap-5 md:grid-cols-4"><StatCard label="Campaigns" value={String(items.length)} detail="Live Firestore records"/><StatCard label="Pending reviews" value={String(milestones.filter((m)=>m.status==="pending").length)} detail="Proofs awaiting verifier action"/><StatCard label="Approved milestones" value={String(milestones.filter((m)=>m.status==="approved"||m.status==="released").length)} detail="On-chain release candidates"/><StatCard label="Contracts deployed" value="4" detail="Configured through Vercel env"/></div></AppShell>; }

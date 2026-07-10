@@ -1,0 +1,4 @@
+import { FundingChart } from "@/components/dashboard/funding-chart";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { AppShell } from "@/components/shared/app-shell";
+export default function AnalyticsPage() { return <AppShell title="Analytics command center" subtitle="Vercel Analytics, Speed Insights and GA4 events track wallet connections, campaign creation, donations and milestone completion."><div className="grid gap-5 md:grid-cols-4"><StatCard label="Wallet connects" value="1,248" detail="GA4 event: wallet_connected"/><StatCard label="Donation conversion" value="18.4%" detail="Explore to signed transaction"/><StatCard label="Milestone SLA" value="14h" detail="Median verification time"/><StatCard label="Error rate" value="0.03%" detail="Sentry monitored"/></div><div className="mt-8"><FundingChart/></div></AppShell>; }

@@ -1,0 +1,6 @@
+"use client";
+import { ScholarshipCard } from "@/components/scholarships/scholarship-card";
+import { AppShell } from "@/components/shared/app-shell";
+import { SkeletonGrid } from "@/components/states/skeleton";
+import { useScholarships } from "@/lib/hooks/use-scholarships";
+export default function ScholarshipsPage() { const { items, loading, error } = useScholarships(); return <AppShell title="Explore scholarships" subtitle="Search by country, university, category, funding status and impact potential."><div className="mb-6 grid gap-3 rounded-3xl border border-white/10 bg-white/[.06] p-4 md:grid-cols-5"><input className="rounded-2xl bg-ink/70 px-4 py-3 md:col-span-2" placeholder="Search students or universities"/><select className="rounded-2xl bg-ink/70 px-4 py-3"><option>All categories</option><option>STEM</option><option>Healthcare</option></select><select className="rounded-2xl bg-ink/70 px-4 py-3"><option>All countries</option></select><select className="rounded-2xl bg-ink/70 px-4 py-3"><option>Funding status</option><option>Funding</option><option>Funded</option></select></div>{loading ? <SkeletonGrid/> : error ? <p className="text-red-300">{error}</p> : <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{items.map((s)=><ScholarshipCard key={s.id} scholarship={s}/>)}</div>}</AppShell>; }
