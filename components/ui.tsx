@@ -8,7 +8,6 @@ export function Card({ children, className }: { children: React.ReactNode; class
   return <div className={cn("glass rounded-3xl p-6", className)}>{children}</div>;
 }
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" };
-export function Button({ children, variant = "primary", className, ...props }: ButtonProps) {
-  return <button {...props} className={cn("rounded-full px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60", variant === "primary" ? "bg-gradient-to-r from-aqua to-mint text-ink shadow-glow" : "border border-white/15 bg-white/10 text-white", className)}>{children}</button>;
+export function Button({ children, variant = "primary", className }: { children: React.ReactNode; variant?: "primary" | "secondary"; className?: string }) {
+  return <button className={cn("rounded-full px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5", variant === "primary" ? "bg-gradient-to-r from-aqua to-mint text-ink shadow-glow" : "border border-white/15 bg-white/10 text-white", className)}>{children}</button>;
 }

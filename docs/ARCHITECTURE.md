@@ -25,4 +25,4 @@ Firestore stores profile and campaign metadata only. XLM, issued assets and rele
 - Deploy Soroban contracts to Stellar Testnet and set contract IDs in Vercel environment variables.
 - Enable Sentry release tracking and source maps.
 - Add rate limiting to mutation routes and Cloud Functions.
-- Run a 10-user Stellar Testnet onboarding rehearsal covering wallet connection, campaign creation, donation, approval and release.
+- Replace mocked fallback data after Firebase project provisioning.

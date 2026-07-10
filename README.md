@@ -20,16 +20,14 @@ Millions of students cannot afford higher education, while traditional scholarsh
 
 ## MVP feature set
 
-- Freighter, xBull, and Albedo wallet authentication through a shared connector interface
-- Student and donor dashboards with portfolio metrics, activity timelines, charts, and wallet status
-- Scholarship exploration, detail pages, creation flow, document requirements, and milestone schedules
-- Donation transaction preparation, wallet signing, Stellar Testnet submission, optimistic UI state, and donor history services
-- Milestone verification workspace for universities, NGOs, mentors, and admins
-- Firestore service layer for public metadata, scholarship CRUD, donations, milestone reviews, feedback, real-time listeners, and transactional funding progress updates
-- Soroban contract workspace for ScholarshipFactory, ScholarshipEscrow, DonationManager, and MilestoneManager
-- Responsive fintech UI with glassmorphism, loading states, error boundaries, reusable components, and analytics views
-- Vercel Analytics, Speed Insights, GA4 integration, and Sentry monitoring instrumentation
-- Documentation for architecture, environment variables, deployment, and production hardening
+- Wallet authentication plans for Freighter, xBull, Albedo, and WalletConnect
+- Student and donor dashboard architecture
+- Scholarship campaign exploration and creation flows
+- Milestone status model: pending, approved, rejected, locked
+- Donation progress and impact analytics
+- Responsive fintech landing page with glassmorphism UI
+- Vercel Analytics, Speed Insights, and Google Analytics integration points
+- Roadmap for Sentry monitoring, Firebase real-time listeners, Cloudinary/Firebase Storage, and Stellar Anchor payouts
 
 ## Smart contract architecture
 
@@ -80,19 +78,6 @@ npm run typecheck
 npm run build
 ```
 
-## Application routes
-
-- `/` — public fintech landing page
-- `/dashboard/student` — student funding, milestone and release dashboard
-- `/dashboard/donor` — donor impact portfolio
-- `/scholarships` — browse and filter campaigns
-- `/scholarships/create` — sign a ScholarshipFactory transaction and persist campaign metadata
-- `/scholarships/[id]` — donation and milestone detail page
-- `/milestones` — verifier review and release workspace
-- `/wallet` — Freighter, xBull and Albedo wallet center
-- `/analytics` — product analytics command center
-- `/admin` — operational review panel
-
 ## Environment variables
 
 Create `.env.local` for production integrations:
@@ -101,19 +86,10 @@ Create `.env.local` for production integrations:
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_STELLAR_NETWORK=testnet
 NEXT_PUBLIC_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
-NEXT_PUBLIC_SCHOLARSHIP_FACTORY_ID=
-NEXT_PUBLIC_ESCROW_CONTRACT_ID=
-NEXT_PUBLIC_DONATION_MANAGER_ID=
-NEXT_PUBLIC_MILESTONE_MANAGER_ID=
 NEXT_PUBLIC_FIREBASE_API_KEY=
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
 SENTRY_DSN=
 ```
-
-## Documentation
-
-- [Architecture](docs/ARCHITECTURE.md)
-- [Environment](docs/ENVIRONMENT.md)
 
 ## Deployment
 
