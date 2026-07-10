@@ -1,0 +1,3 @@
+import { StatCard } from "@/components/dashboard/stat-card";
+import { AppShell } from "@/components/shared/app-shell";
+export default function AdminPage() { return <AppShell title="Admin panel" subtitle="Operational controls for verifier roles, campaign risk checks, feedback review and contract deployment metadata."><div className="grid gap-5 md:grid-cols-4"><StatCard label="Pending reviews" value="7" detail="Proofs awaiting verifier action"/><StatCard label="Flagged campaigns" value="1" detail="Manual review required"/><StatCard label="Active verifiers" value="38" detail="Universities, NGOs and mentors"/><StatCard label="Contracts deployed" value="4" detail="Stellar Testnet"/></div></AppShell>; }

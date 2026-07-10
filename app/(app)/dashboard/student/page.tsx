@@ -1,0 +1,6 @@
+import { ActivityTimeline } from "@/components/dashboard/activity-timeline";
+import { FundingChart } from "@/components/dashboard/funding-chart";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { AppShell } from "@/components/shared/app-shell";
+import { currentStudent, scholarships } from "@/lib/mock-data";
+export default function StudentDashboard() { const mine = scholarships.filter(s=>s.studentId===currentStudent.id); const raised = mine.reduce((a,s)=>a+s.raised,0); return <AppShell title="Student dashboard" subtitle="Track scholarships, milestones, wallet balance and verified releases in one transparent workspace."><div className="grid gap-5 md:grid-cols-4"><StatCard label="Wallet balance" value="250 XLM" detail={currentStudent.wallet}/><StatCard label="Active scholarships" value={String(mine.length)} detail="1 campaign receiving donations"/><StatCard label="Funds raised" value={`${raised} XLM`} detail="75% of active goal"/><StatCard label="Pending proofs" value="1" detail="NGO review in progress"/></div><div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_.8fr]"><FundingChart/><div className="glass rounded-3xl p-6"><h2 className="text-xl font-bold">Activity</h2><div className="mt-4"><ActivityTimeline/></div></div></div></AppShell>; }
