@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +15,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <AppProviders>{children}</AppProviders>
+        {children}
         <Analytics />
         <SpeedInsights />
         {process.env.NEXT_PUBLIC_GA_ID ? (
