@@ -1,0 +1,5 @@
+"use client";
+import { Button, Card } from "@/components/ui";
+import { connectors } from "@/lib/wallet/connectors";
+import { useWallet } from "@/components/providers/wallet-provider";
+export function WalletPanel() { const { session, connect, disconnect, error, isConnecting } = useWallet(); return <Card>{session ? <div><p className="text-sm text-slate-400">Connected wallet</p><p className="mt-2 font-mono">{session.publicKey}</p><p className="mt-2 text-sm text-mint">{session.provider} connected at {new Date(session.connectedAt).toLocaleTimeString()}</p><div className="mt-5"><Button variant="secondary" onClick={disconnect}>Disconnect</Button></div></div> : <div><h2 className="text-2xl font-bold">Connect a Stellar wallet</h2><p className="mt-2 text-slate-300">Authenticate and sign scholarship, donation and milestone transactions with Freighter, xBull or Albedo.</p><div className="mt-5 grid gap-3 md:grid-cols-3">{connectors.map(c=><Button key={c.id} variant="secondary" onClick={() => connect(c.id)}>{isConnecting ? "Connecting..." : c.name}</Button>)}</div>{error ? <p className="mt-4 text-sm text-red-300">{error}</p> : null}</div>}</Card>; }
