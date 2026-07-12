@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink text-white antialiased selection:bg-mint selection:text-ink;
+}
+
+/* Glassmorphism Refinements */
+.glass {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.005) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.35);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%);
+  box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.5), 0 0 40px 0 rgba(56, 189, 248, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Premium Ambient Lighting Backgrounds */
+.ambient-bg {
+  position: relative;
+  background-color: #030712;
+  overflow: hidden;
+}
+
+.ambient-bg::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 45%;
+  height: 45%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 75%);
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.ambient-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 5%;
+  right: -5%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 75%);
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+/* Gradient Text Styling */
+.gradient-text {
+  @apply bg-gradient-to-r from-white via-blue-100 to-mint bg-clip-text text-transparent;
+}
+
+/* Input Fields Glow */
+input, textarea, select {
+  @apply transition-all duration-200 ease-in-out border border-white/10 bg-ink/75 focus:border-mint/60 focus:ring-1 focus:ring-mint/30 focus:shadow-[0_0_20px_rgba(52,211,153,0.12)] outline-none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.25);
+}

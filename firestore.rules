@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Checks if the user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: Checks if the request comes from the owner matching UID
+    function isOwner(uid) {
+      return isAuth() && request.auth.uid == uid;
+    }
+
+    // Helper: Checks if the authenticated user has a specific role
+    function hasRole(role) {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+
+    // Helper: Checks if the authenticated user is a verifier
+    function isVerifier() {
+      return hasRole('ngo') || hasRole('university') || hasRole('admin');
+    }
+
+    // USERS COLLECTION
+    match /users/{uid} {
+      allow read: if isAuth();
+      // Allow creation of "unassigned" role on first login, restrict subsequent writes to the owner
+      allow create: if isAuth();
+      allow update, delete: if isOwner(uid) && request.resource.data.role != 'admin';
+      
+      // Admin bypass for roles administration
+      allow write: if hasRole('admin');
+    }
+
+    // WALLETS REGISTRY
+    match /wallets/{walletAddress} {
+      allow read: if isAuth();
+      allow write: if isAuth();
+    }
+
+    // SCHOLARSHIPS COLLECTION
+    match /scholarships/{scholarshipId} {
+      allow read: if true; // Publicly browsable
+      
+      // Only students can create campaigns
+      allow create: if isAuth() && (hasRole('student') || hasRole('unassigned'));
+      
+      // Creators can submit proofs (update milestones), verifiers can change status
+      allow update: if isAuth() && (
+        resource.data.creatorUid == request.auth.uid || 
+        isVerifier()
+      );
+      
+      allow delete: if isAuth() && (
+        resource.data.creatorUid == request.auth.uid || 
+        hasRole('admin')
+      );
+    }
+
+    // DONATIONS COLLECTION
+    match /donations/{donationId} {
+      allow read: if true;
+      allow create: if isAuth() && hasRole('donor');
+      allow update, delete: if false; // Donations are immutable logs
+    }
+
+    // MILESTONE REVIEWS COLLECTION
+    match /milestoneReviews/{reviewId} {
+      allow read: if isAuth();
+      allow create: if isAuth() && isVerifier();
+      allow update, delete: if false; // Reviews are audit logs
+    }
+
+    // NOTIFICATIONS COLLECTION
+    match /notifications/{notificationId} {
+      allow read: if isAuth() && resource.data.recipientUid == request.auth.uid;
+      allow create: if isAuth();
+      allow update: if isAuth() && resource.data.recipientUid == request.auth.uid;
+      allow delete: if isAuth() && resource.data.recipientUid == request.auth.uid;
+    }
+  }
+}

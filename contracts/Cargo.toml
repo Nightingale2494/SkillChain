@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "scholarship_factory",
+    "scholarship_escrow",
+    "donation_manager",
+    "milestone_manager"
+]
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+panic = "abort"
+strip = "symbols"
+codegen-units = 1
+lto = true

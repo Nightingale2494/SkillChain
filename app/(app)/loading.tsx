@@ -1,0 +1,1 @@
+export default function Loading() { return <div className="grid min-h-screen place-items-center bg-ink text-white"><div className="rounded-3xl border border-white/10 bg-white/[.06] p-8 text-center"><div className="mx-auto mb-4 size-10 animate-spin rounded-full border-2 border-mint border-t-transparent"/><p>Loading SkillChain workspace…</p></div></div>; }

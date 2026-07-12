@@ -1,0 +1,2 @@
+export function SkeletonCard() { return <div className="animate-pulse rounded-3xl border border-white/10 bg-white/[.06] p-6"><div className="h-4 w-24 rounded bg-white/10"/><div className="mt-4 h-8 w-2/3 rounded bg-white/10"/><div className="mt-5 h-3 rounded bg-white/10"/><div className="mt-3 h-3 w-5/6 rounded bg-white/10"/></div>; }
+export function SkeletonGrid({ count = 6 }: { count?: number }) { return <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{Array.from({ length: count }, (_, i) => <SkeletonCard key={i}/>)}</div>; }
